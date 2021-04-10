@@ -9,11 +9,11 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false
       },
       CheckInDate: {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         allowNull: false
       },
       CheckOutDate: {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
         allowNull: false
       },
       NumberOfAdults: {
