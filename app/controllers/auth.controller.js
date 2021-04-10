@@ -29,7 +29,7 @@ exports.signup = (req, res) => {
     include: [ Employee ]
   })
     .then(user => {
-      console.log("user",user);
+      // console.log("user",user);
       if (req.body.roles) {
         Role.findAll({
           where: {

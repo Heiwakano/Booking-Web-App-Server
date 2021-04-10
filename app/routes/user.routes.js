@@ -24,7 +24,20 @@ module.exports = function(app) {
   );
   
   app.put(
-    "/api/test/user/:username", controller.updateUser
+    "/api/test/user/otp/:email", controller.updateOTP
+  );
+
+  app.put(
+    "/api/test/user/:username", controller.updateLoginAttempts
+  );
+
+
+  app.put(
+    "/api/test/checkotp/:email", controller.checkOTPUser
+  );
+
+  app.put(
+    "/api/test/resetpassword/:email", controller.resetPassword
   );
 
   app.get(
