@@ -1,5 +1,8 @@
 const db = require("../models");
 const User = db.user;
+
+var bcrypt = require("bcryptjs");
+
 exports.allAccess = (req, res) => {
     res.status(200).send("Public Content.");
   };
@@ -19,8 +22,9 @@ exports.allAccess = (req, res) => {
 
   exports.updateUser = (req, res) => {
     const username = req.params.username;
-
-    User.update(req.body, {
+    const password = req.body.password;
+    console.log(password?password:"no passwprd");
+    User.update(password?{password: bcrypt.hashSync(password, 8)}:req.body, {
         where: { username: username }
     })
         .then(num => {

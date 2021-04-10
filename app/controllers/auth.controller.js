@@ -2,6 +2,7 @@ const db = require("../models");
 const config = require("../config/auth.config");
 const User = db.user;
 const Role = db.role;
+const Employee = db.employee;
 
 const Op = db.Sequelize.Op;
 
@@ -16,9 +17,19 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8),
     loginAttempts: 0,
     isActive: true,
+    createBy: "",
+    updateBy:"",
+    employees: {
+      firstName: req.body.firstname,
+      lastName: req.body.lastname,
+      email: req.body.email,
+    }
 
+  },{
+    include: [ Employee ]
   })
     .then(user => {
+      console.log("user",user);
       if (req.body.roles) {
         Role.findAll({
           where: {

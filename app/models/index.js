@@ -24,6 +24,7 @@ db.rooms = require("./room.model.js")(sequelize, Sequelize);
 db.statuses = require("./status.model.js")(sequelize, Sequelize);
 db.user = require("../models/user.model.js")(sequelize, Sequelize);
 db.role = require("../models/role.model.js")(sequelize, Sequelize);
+db.employee = require("../models/employee.model.js")(sequelize, Sequelize);
 
 db.role.belongsToMany(db.user, {
   through: "user_roles",
@@ -35,8 +36,11 @@ db.user.belongsToMany(db.role, {
   foreignKey: "userId",
   otherKey: "roleId"
 });
+db.user.hasMany(db.employee);
+// db.employee.belongsTo(db.user);
 
-db.ROLES = ["user", "admin", "moderator"];
+// db.ROLES = ["user", "admin", "moderator"];
+// db.Status = ["Booked","CheckedIn","CheckedOut","Canceled"];
 
 
 db.bookings.belongsTo(db.rooms, {
@@ -50,5 +54,6 @@ db.bookings.belongsTo(db.statuses, {
   foreignKey: "statusId",
   as: "status",
 });
+
 
 module.exports = db;

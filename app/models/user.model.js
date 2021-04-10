@@ -17,10 +17,10 @@ module.exports = (sequelize, Sequelize) => {
         allowNull: false
       },
       lastLoginAttempsDate: {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       lastLoginDate: {
-        type: Sequelize.DATEONLY,
+        type: Sequelize.DATE,
       },
       otp: {
         type: Sequelize.STRING,
@@ -32,22 +32,14 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.BOOLEAN,
         allowNull: false
       },
-      // createDate: {
-      //   type: Sequelize.DATEONLY,
-      //   allowNull: false
-      // },
-      // createBy: {
-      //   type: Sequelize.STRING,
-      //   allowNull: false
-      // },
-      // updateDate: {
-      //   type: Sequelize.DATEONLY,
-      //   allowNull: false
-      // },
-      // updateBy: {
-      //   type: Sequelize.STRING,
-      //   allowNull: false
-      // },
+      createBy: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
+      updateBy: {
+        type: Sequelize.STRING,
+        allowNull: false
+      },
     });
   
     return User;
