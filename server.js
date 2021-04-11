@@ -3,6 +3,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const app = express();
 
+global.__basedir = __dirname;
+
 var corsOptions = {
   origin: "http://localhost:8081"
 };
@@ -10,10 +12,10 @@ var corsOptions = {
 app.use(cors(corsOptions));
 
 // parse requests of content-type - application/json
-app.use(bodyParser.json());
+app.use(express.json());
 
 // parse requests of content-type - application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 const Role = db.role;
@@ -74,7 +76,7 @@ require("./app/routes/status.routes")(app);
 require('./app/routes/auth.routes')(app);
 require('./app/routes/user.routes')(app);
 require('./app/routes/email.routes')(app);
-
+require('./app/routes/file.routes')(app);
 
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
