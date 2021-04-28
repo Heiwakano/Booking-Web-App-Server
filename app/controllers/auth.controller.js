@@ -5,6 +5,8 @@ const Role = db.role;
 const Employee = db.employee;
 const { userEntity }  = require("../Entities/userEntity");
 const Op = db.Sequelize.Op;
+const { v5: uuidv5 } = require('uuid');
+const FILENAME = '1b671a64-40d5-491e-99b0-da01ff1f3341';
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
@@ -23,7 +25,7 @@ exports.signup = (req, res) => {
     firstName: req.body.firstname,
     lastName: req.body.lastname,
     email: req.body.email,
-    profilePicture: 'http://localhost:8080/api/files/download/blank-profile-picture.png',
+    profilePicture: 'http://localhost:8080/api/files/download/'+ uuidv5("blank-profile-picture.png", FILENAME),
   };
   userModel.role = req.role;
 
