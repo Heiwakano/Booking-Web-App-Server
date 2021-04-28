@@ -20,6 +20,7 @@ module.exports = function(app) {
 
   app.get(
     "/api/test/user/:username",
+    [authJwt.verifyToken],
     controller.userFindByUsername
   );
   
@@ -28,7 +29,7 @@ module.exports = function(app) {
   );
 
   app.put(
-    "/api/test/user/:username", controller.updateLoginAttempts
+    "/api/test/user/:id", controller.updateEmployeeName
   );
 
 

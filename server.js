@@ -19,13 +19,15 @@ app.use(express.urlencoded({ extended: true }));
 
 const db = require("./app/models");
 const Role = db.role;
+const Room = db.rooms;
+const Booking = db.bookings;
 const Status = require("./app/controllers/status.controller.js");
 // const Room = require("./app/controllers/room.controller.js");
 // const Booking = require("./app/controllers/booking.controller.js");
 
 const run = async () => {
-   //Create booked status
-   const bookedStatus = await Status.createStatus({
+  //Create booked status
+  const bookedStatus = await Status.createStatus({
     Label: 'Booked',
   });
   //Create CheckedIn status
@@ -41,27 +43,56 @@ const run = async () => {
     Label: 'Canceled',
   });
 };
-function initial() {
+function initial(n) {
   Role.create({
     id: 1,
     name: "user"
   });
- 
+
   Role.create({
     id: 2,
     name: "moderator"
   });
- 
+
   Role.create({
     id: 3,
     name: "admin"
   });
+  for (var i = 1; i <= n; i++) {
+    
+    if (i > 99) {
+      Room.create({
+        id: i,
+        RoomNumber: i.toString(),
+        AdultsCapacity: i % 100 + 1,
+        ChildrenCapacity: i % 100 + 1,
+        Price: i % 10,
+      });
+    } else if (i > 9) {
+      Room.create({
+        id: i,
+        RoomNumber: "0" + i.toString(),
+        AdultsCapacity: i % 10+1,
+        ChildrenCapacity: i % 10+1,
+        Price: (i + 1),
+      });
+    } else {
+      Room.create({
+        id: i,
+        RoomNumber: "00" + i.toString(),
+        AdultsCapacity: i,
+        ChildrenCapacity: i,
+        Price: (i + 1) * 10,
+      });
+    }
+   
+  }
 }
 
 db.sequelize.sync();
-// db.sequelize.sync({force: true}).then(() => {
+// db.sequelize.sync({ force: true }).then(() => {
 //   console.log('Drop and Resync Db');
-//   initial();
+//   initial(400);
 //   run();
 // });
 

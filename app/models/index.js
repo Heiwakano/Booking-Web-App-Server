@@ -39,7 +39,7 @@ db.user.belongsToMany(db.role, {
 db.user.hasMany(db.employee);
 // db.employee.belongsTo(db.user);
 
-// db.ROLES = ["user", "admin", "moderator"];
+db.ROLES = ["user", "admin", "moderator"];
 // db.Status = ["Booked","CheckedIn","CheckedOut","Canceled"];
 
 

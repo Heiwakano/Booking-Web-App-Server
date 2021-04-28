@@ -4,8 +4,9 @@ module.exports = app => {
     var router = require("express").Router();
 
     router.post("/upload", files.upload);
+    router.get("/files/:email", files.getProfilePic);
     router.get("/files", files.getListFiles);
-    router.get("/files/:name", files.download);
+    router.get("/files/download/:name", files.download);
 
     app.use('/api', router);
 };

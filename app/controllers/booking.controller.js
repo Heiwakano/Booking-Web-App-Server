@@ -14,13 +14,13 @@ exports.create = (req, res) => {
         });
         return;
     }
-
+    
     // Create a Booking
     const booking = {
         GuestLastName: req.body.GuestLastName,
         GuestFirstName: req.body.GuestFirstName,
-        CheckInDate: req.body.CheckInDate,
-        CheckOutDate: req.body.CheckOutDate,
+        CheckInDate: new Date(req.body.CheckInDate),
+        CheckOutDate: new Date(req.body.CheckOutDate),
         NumberOfAdults: req.body.NumberOfAdults,
         NumberOfChildren: req.body.NumberOfChildren,
         roomId: req.body.roomId,
@@ -49,15 +49,19 @@ exports.findAll = async (req, res) => {
     const name = req.query.Name;
     const status = req.query.Status;
     const isHaveNameAndStatus = typeof name === 'string' && typeof status === 'string';
-    const onlyHasName = typeof name === 'string' && typeof status !== 'string';
+    const onlyHasName = typeof name === 'string' && typeof status !== 'string'; 
+    const findName = '%'+name+'%';
     const onlyHasStatus = typeof name !== 'string' && typeof status == 'string';
-    var condition = isHaveNameAndStatus ? "(bookings.GuestFirstName = " + '"' + name + '"' + " or bookings.GuestLastName = " + '"' + name + '"' + ") and statuses.id = " + status 
-        : onlyHasName?"bookings.GuestFirstName = " + '"' + name + '"' + " or bookings.GuestLastName = " + '"' + name + '"'
-        : onlyHasStatus?"statuses.id = " +  status :"bookings.id IS NOT NULL";
+    var condition = isHaveNameAndStatus ? "concat(bookings.GuestFirstName, ' ', bookings.GuestLastName) Like :findName and statuses.id = " + status 
+        : onlyHasName ? "concat(bookings.GuestFirstName, ' ', bookings.GuestLastName) Like :findName"
+        : onlyHasStatus ? "statuses.id = " +  status :"bookings.id IS NOT NULL";
 
     await db.sequelize.query(
-        "SELECT GuestLastName,GuestFirstName, CheckOutDate,CheckInDate,RoomNumber,Label,bookings.id FROM ((bookings INNER JOIN statuses ON bookings.statusId = statuses.id) INNER JOIN rooms ON bookings.roomId = rooms.id) where " + condition,
+        "SELECT GuestLastName,GuestFirstName, CheckOutDate,CheckInDate,RoomNumber,Label,bookings.id,Price FROM ((bookings INNER JOIN statuses ON bookings.statusId = statuses.id) INNER JOIN rooms ON bookings.roomId = rooms.id) where " + condition,
         {
+            replacements: {
+                findName: findName,
+            },
             type: QueryTypes.SELECT
         }
     )
@@ -139,9 +143,6 @@ exports.findBooking = async (req, res) => {
         "INNER JOIN statuses ON bookings.statusId=statuses.id "+
         "WHERE bookings.id="+ id +";",
         {
-            // replacements: {
-            //     id: id,
-            // },
             type: QueryTypes.SELECT
         }
     )
