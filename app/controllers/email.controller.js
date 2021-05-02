@@ -34,7 +34,7 @@ exports.create = (req, res) => {
         from: 'tempbooking01@gmail.com',  // sender address
         to: data.to,   // tempbooking02@gmail.com
         subject: data.subject,
-        html: '<h1> OTP : ' + data.digit + '</h1>' + '<h3> Ref :' + data.char + '</h3>'
+        html: '<h1 style={{color: "#3b5998"}}> OTP : ' + data.digit + '</h1>' + '<h3> Ref : ' + data.char + '</h3>'
     };
     User.findOne({
         where: {
@@ -46,11 +46,12 @@ exports.create = (req, res) => {
             transporter.sendMail(mailData, function (error, response) {
                 if (error) {
                     console.log(error);
+                    res.status(200).send({ message: "Can not send to this email: " + data.to})
                     //error handler
                 } else {
                     //success handler 
-                    res.send(data.digit);
-                    res.status(200).send({ message: "Mail send", message_id: response.messageId })
+                    res.send({otp: data.digit, ref: data.char});
+                    res.status(200).send({ message: "Email send successfully", message_id: response.messageId })
                     console.log('send email success');
                 }
             });
@@ -61,7 +62,7 @@ exports.create = (req, res) => {
           }
       })
       .catch(err => {
-        res.status(500).send({ message: err.message });
+        res.status(400).send({ message: "Can not find this email: " + data.to});
       });
    
 }

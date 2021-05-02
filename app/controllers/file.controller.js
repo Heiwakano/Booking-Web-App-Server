@@ -1,6 +1,5 @@
 const uploadFile = require("../middleware/upload");
 const fs = require("fs");
-const baseUrl = "http://localhost:8080/api/files/";
 const file = require("../config/file.config");
 const db = require("../models");
 const Employee = db.employee;
@@ -16,7 +15,7 @@ const upload = async (req, res) => {
     }
 
     Employee.update({
-      profilePicture: baseUrl +"download/"+ uuidv5(req.file.originalname, FILENAME)
+      profilePicture: uuidv5(req.file.originalname, FILENAME)
     }, {
       where: { id: req.body.id }
     })

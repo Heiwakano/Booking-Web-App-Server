@@ -91,8 +91,8 @@ checkPassword = async (req, res, next) => {
     .withMessage('must contain a password')
     .isLength({ max: 40 })
     .withMessage('password must be at not more than 40 chars long')
-    .isLength({ min: 1 })
-    .withMessage('password must be at least 1 chars long')
+    .isLength({ min: 6 })
+    .withMessage('password must be at least 6 chars long')
     .run(req);
 
     const results = validationResult(req);

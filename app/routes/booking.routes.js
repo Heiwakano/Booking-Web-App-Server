@@ -3,6 +3,7 @@ module.exports = app => {
   const db = require("../models");
   const Room = db.rooms;
   const Status = db.statuses;
+  const Booking = db.bookings;
   var router = require("express").Router();
   const { body, check, validationResult } = require('express-validator');
   // Create a new Booking
@@ -64,13 +65,100 @@ module.exports = app => {
   router.post("/findCheapest", bookings.findCheapest);
 
   //Retrieve a single Booking include rooms and status with id
-  router.get("/:id", bookings.findBooking);
+  router.get("/:id", 
+  async (req, res, next) => {
+    try {
+      await param('id').custom(value => {
+        return Booking.findByPk(value).then(room => {
+          if (!room) {
+            return Promise.reject('Invalid boooking id.');
+          } 
+        });
+      }).run(req);
+
+      const results = validationResult(req);
+      console.log(results);
+      if (!results.isEmpty()) {
+        results.errors.map(result => {
+          const message = result.msg;
+          res.status(400).send({
+            message: message
+          });
+        })
+        return;
+      }
+
+      next();
+    } catch (error) {
+      return next(error)
+    }
+
+  },
+  bookings.findBooking);
 
   // Update a Booking with id
-  router.put("/:id", bookings.updateBooking);
+  router.put("/:id", 
+  async (req, res, next) => {
+    try {
+      await param('id').custom(value => {
+        return Booking.findByPk(value).then(room => {
+          if (!room) {
+            return Promise.reject('Invalid boooking id.');
+          } 
+        });
+      }).run(req);
+
+      const results = validationResult(req);
+      console.log(results);
+      if (!results.isEmpty()) {
+        results.errors.map(result => {
+          const message = result.msg;
+          res.status(400).send({
+            message: message
+          });
+        })
+        return;
+      }
+
+      next();
+    } catch (error) {
+      return next(error)
+    }
+
+  },
+  bookings.updateBooking);
 
   // Delete a Booking with id
-  router.delete("/:id", bookings.deleteBooking);
+  router.delete("/:id", 
+  async (req, res, next) => {
+    try {
+      await param('id').custom(value => {
+        return Booking.findByPk(value).then(room => {
+          if (!room) {
+            return Promise.reject('Invalid boooking id.');
+          } 
+        });
+      }).run(req);
+
+      const results = validationResult(req);
+      console.log(results);
+      if (!results.isEmpty()) {
+        results.errors.map(result => {
+          const message = result.msg;
+          res.status(400).send({
+            message: message
+          });
+        })
+        return;
+      }
+
+      next();
+    } catch (error) {
+      return next(error)
+    }
+
+  },
+  bookings.deleteBooking);
 
   // // Delete a Room with id
   // router.delete("/:id", bookings.deleteRoom);

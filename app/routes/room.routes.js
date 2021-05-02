@@ -40,8 +40,39 @@ module.exports = app => {
   // // Retrieve all published Tutorials
   // router.get("/published", rooms.findAllPublished);
 
-  // Retrieve a single Tutorial with id
-  router.get("/:id", rooms.findOne);
+  // Retrieve a single room with id
+  router.get("/:id", 
+  async (req, res, next) => {
+    try {
+      await param('id').custom(value => {
+        return Room.findByPk(value).then(room => {
+          if (!room) {
+            return Promise.reject('Invalid room id.');
+          } 
+        });
+      }).run(req);
+
+      const results = validationResult(req);
+      console.log(results);
+      if (!results.isEmpty()) {
+        results.errors.map(result => {
+          const message = result.msg;
+          res.status(400).send({
+            message: message
+          });
+        })
+        return;
+      }
+
+      next();
+    } catch (error) {
+      return next(error)
+    }
+
+  },
+  
+  rooms.findOne);
+
 
   // Update a Tutorial with id
   router.put("/:id",
@@ -80,7 +111,37 @@ module.exports = app => {
     rooms.update);
 
   // Delete a room with id
-  router.delete("/:id", rooms.delete);
+  router.delete("/:id", 
+  async (req, res, next) => {
+    try {
+      await param('id').custom(value => {
+        return Room.findByPk(value).then(room => {
+          if (!room) {
+            return Promise.reject('Invalid room id.');
+          } 
+        });
+      }).run(req);
+
+      const results = validationResult(req);
+      console.log(results);
+      if (!results.isEmpty()) {
+        results.errors.map(result => {
+          const message = result.msg;
+          res.status(400).send({
+            message: message
+          });
+        })
+        return;
+      }
+
+      next();
+    } catch (error) {
+      return next(error)
+    }
+
+  },
+  rooms.delete);
+
 
   // Delete all room
   router.delete("/", rooms.deleteAll);

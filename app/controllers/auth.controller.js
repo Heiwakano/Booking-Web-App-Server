@@ -25,7 +25,7 @@ exports.signup = (req, res) => {
     firstName: req.body.firstname,
     lastName: req.body.lastname,
     email: req.body.email,
-    profilePicture: 'http://localhost:8080/api/files/download/'+ uuidv5("blank-profile-picture.png", FILENAME),
+    profilePicture: uuidv5("blank-profile-picture.png", FILENAME),
   };
   userModel.role = req.role;
 
@@ -59,6 +59,7 @@ exports.signup = (req, res) => {
 };
 
 exports.signin = (req, res) => {
+  // await auth.service.signin(req);
   User.findOne({
     where: {
       username: req.body.username

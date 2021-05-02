@@ -46,12 +46,12 @@ const run = async () => {
 function initial(n) {
   Role.create({
     id: 1,
-    name: "user"
+    name: "receptionist"
   });
 
   Role.create({
     id: 2,
-    name: "moderator"
+    name: "manager"
   });
 
   Role.create({
@@ -60,29 +60,29 @@ function initial(n) {
   });
   for (var i = 1; i <= n; i++) {
     
-    if (i > 99) {
+    if (i > 4) {
       Room.create({
         id: i,
-        RoomNumber: i.toString(),
-        AdultsCapacity: i % 100 + 1,
-        ChildrenCapacity: i % 100 + 1,
-        Price: i % 10,
+        RoomNumber: i%10===0?"5" + (i%10).toString() + "0":"4" + i.toString() + "0",
+        AdultsCapacity: 4,
+        ChildrenCapacity: 1,
+        Price: 5000,
       });
-    } else if (i > 9) {
+    } else if (i > 2) {
       Room.create({
         id: i,
-        RoomNumber: "0" + i.toString(),
-        AdultsCapacity: i % 10+1,
-        ChildrenCapacity: i % 10+1,
-        Price: (i + 1),
+        RoomNumber: "4" + i.toString() + "0",
+        AdultsCapacity: 2,
+        ChildrenCapacity: 0,
+        Price: 2000,
       });
     } else {
       Room.create({
         id: i,
-        RoomNumber: "00" + i.toString(),
-        AdultsCapacity: i,
-        ChildrenCapacity: i,
-        Price: (i + 1) * 10,
+        RoomNumber: "4" + i.toString() + "0",
+        AdultsCapacity: 2,
+        ChildrenCapacity: 1,
+        Price: 3000,
       });
     }
    
@@ -92,7 +92,7 @@ function initial(n) {
 db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log('Drop and Resync Db');
-//   initial(400);
+//   initial(10);
 //   run();
 // });
 
