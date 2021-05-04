@@ -60,18 +60,18 @@ function initial(n) {
   });
   for (var i = 1; i <= n; i++) {
     
-    if (i > 4) {
+    if (i%10 > 4) {
       Room.create({
         id: i,
-        RoomNumber: i%10===0?"5" + (i%10).toString() + "0":"4" + i.toString() + "0",
+        RoomNumber: (40+i).toString() + "0",
         AdultsCapacity: 4,
         ChildrenCapacity: 1,
         Price: 5000,
       });
-    } else if (i > 2) {
+    } else if (i%10 > 2) {
       Room.create({
         id: i,
-        RoomNumber: "4" + i.toString() + "0",
+        RoomNumber: (40+i).toString() + "0",
         AdultsCapacity: 2,
         ChildrenCapacity: 0,
         Price: 2000,
@@ -79,7 +79,7 @@ function initial(n) {
     } else {
       Room.create({
         id: i,
-        RoomNumber: "4" + i.toString() + "0",
+        RoomNumber: (40+i).toString() + "0",
         AdultsCapacity: 2,
         ChildrenCapacity: 1,
         Price: 3000,
@@ -92,7 +92,7 @@ function initial(n) {
 db.sequelize.sync();
 // db.sequelize.sync({ force: true }).then(() => {
 //   console.log('Drop and Resync Db');
-//   initial(10);
+//   initial(40);
 //   run();
 // });
 

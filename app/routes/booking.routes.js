@@ -5,7 +5,7 @@ module.exports = app => {
   const Status = db.statuses;
   const Booking = db.bookings;
   var router = require("express").Router();
-  const { body, check, validationResult } = require('express-validator');
+  const { body, check, param, validationResult } = require('express-validator');
   // Create a new Booking
   router.post("/", 
   async (req, res, next) => {
